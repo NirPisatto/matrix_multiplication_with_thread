@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MatrixSet {
+public class MatrixSet extends Thread {
+    Matrix main;
     public int row;
     public int col;
+
+    public int name = 0;
     public ArrayList<ArrayList<Integer>> set;
 
     public ArrayList<Integer> get_rows(int row_index){
@@ -17,8 +20,14 @@ public class MatrixSet {
         }
         return temp;
     }
-
     public MatrixSet(){
+        this.col = 0;
+        this.row = 0;
+        set = new ArrayList<>();
+    }
+
+    public MatrixSet(Matrix main){
+        main = main;
         this.col = 0;
         this.row = 0;
         set = new ArrayList<>();
@@ -41,5 +50,10 @@ public class MatrixSet {
             }
             set.add(temp_rows);
         }
+    }
+
+    @Override
+    public void run() {
+        auto_fill(9);
     }
 }

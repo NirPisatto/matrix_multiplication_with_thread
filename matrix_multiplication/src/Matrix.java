@@ -1,10 +1,54 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Matrix {
 
     public MatrixSet set_a;
     public MatrixSet set_b;
+
+    public int running_threads = 0;
+    public int total_threads = 2;
+
+    public long done_time = 0;
+    public long start_time = 0;
+
+
+    public void dev_auto_create_matrix(int row){
+        start_time = System.nanoTime();
+        set_a = new MatrixSet(this);
+        set_a.row = row;
+        set_a.col = row;
+
+        set_b = new MatrixSet(this);
+        set_b.row = row;
+        set_b.col = row;
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ArrayList<Future<?>> futures = new ArrayList<>();
+
+        Future<?> f_set_a = executor.submit(set_a);
+        futures.add(f_set_a);
+
+        Future<?> f_set_b = executor.submit(set_b);
+        futures.add(f_set_b);
+
+        for (Future<?>of : futures) {
+            try {
+                of.get();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            } catch (ExecutionException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        executor.shutdown();
+
+    }
 
     public void auto_create_matrix(){
         Scanner user_input = new Scanner(System.in);
@@ -21,9 +65,9 @@ public class Matrix {
         set_b = set;
 
         set_a.auto_fill(10);
-        set_a.view_display();
+//        set_a.view_display();
         set_b.auto_fill(10);
-        set_b.view_display();
+//        set_b.view_display();
     }
 
     public MatrixSet multiple(){
@@ -39,6 +83,41 @@ public class Matrix {
             }
             ans.set.add(temp_col_ans);
         }
+        return ans;
+    }
+
+
+
+    public MatrixSet multiple_threads(){
+        if (!sets_validation_valid()) return null;
+        MatrixSet ans = new MatrixSet();
+        ans.row = set_a.row;
+        ans.col = set_b.col;
+        int cores = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(cores - 1);
+        ArrayList<Future<?>> futures = new ArrayList<>();
+
+        for (int i = 0; i < set_a.row; i++) {
+            ans.set.add(new ArrayList<>());
+            Future<?> get_row_task = executor.submit(new MatrixRowMultiplicationThread(ans, set_a, set_b, i));
+            futures.add(get_row_task);
+        }
+
+
+        for (Future<?>sub_task_reso : futures) {
+            try {
+                sub_task_reso.get();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            } catch (ExecutionException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        executor.shutdown();
+
+//        ans.view_display();
+
         return ans;
     }
 

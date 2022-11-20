@@ -6,9 +6,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        single();
+        int row = 1000;
+
+        if (args.length > 0){
+            row = Integer.parseInt(args[0]);
+        }
+
+        Matrix matrix = new Matrix();
+        long startTime = System.nanoTime();
+        matrix.dev_auto_create_matrix(row);
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        System.out.println(duration/1000000);
 
 
+//        startTime = System.nanoTime();
+//        matrix.multiple();
+//        endTime = System.nanoTime();
+//        duration = (endTime - startTime);
+//        System.out.println(duration/1000000);
+
+
+
+        startTime = System.nanoTime();
+        matrix.multiple_threads();
+        endTime = System.nanoTime();
+        duration = (endTime - startTime);
+
+        System.out.println("Matrix [" + row +" X " + row + "] in "+Runtime.getRuntime().availableProcessors() + " cores - TIME = " +duration/1000000);
     }
     private static void single(){
         Matrix matrix = new Matrix();
@@ -31,7 +56,12 @@ public class Main {
                 if (matrix.sets_validation_valid()) {
 //                    matrix.set_a.view_display();
 //                    matrix.set_b.view_display();
+                    long startTime = System.nanoTime();
                     MatrixSet ans = matrix.multiple();
+//                    long endTime = System.nanoTime();
+//                    long duration = (endTime - startTime);
+//                    System.out.println(duration/1000000);
+
 //                    ans.view_display();
 
                 }else{
