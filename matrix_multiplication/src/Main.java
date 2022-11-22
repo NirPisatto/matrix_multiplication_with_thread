@@ -22,30 +22,30 @@ public class Main {
 
             CSVWriter writer = new CSVWriter(outputfile);
 
-            String[] header = { "system environment", "test condition", "cores (active)","setting up duration (second)","multiplication execution duration (second)"};
+            String[] header = { "system environment", "test condition", "cores (active)","setting up duration (milliseconds)","multiplication execution duration (milliseconds)"};
             writer.writeNext(header);
 
-            for (int row = 1000; row == 1000; row+=300) {
-                System.out.println("TEST "+ row + " x " + row + " [running...]");
-                Matrix matrix = new Matrix();
-                long startTime = System.nanoTime();
-                matrix.dev_auto_create_matrix(row);
-                long endTime = System.nanoTime();
-                long setup_duration = (endTime - startTime);
+            int row = 10000;
+            System.out.println("TEST "+ row + " x " + row + " [running...]");
+            Matrix matrix = new Matrix();
+            long startTime = System.nanoTime();
+            matrix.dev_auto_create_matrix(row);
+            long endTime = System.nanoTime();
+            long setup_duration = (endTime - startTime);
 
-                startTime = System.nanoTime();
-                matrix.multiple_threads();
-                endTime = System.nanoTime();
-                long cal_duration = (endTime - startTime);
+            startTime = System.nanoTime();
+            matrix.multiple_threads();
+            endTime = System.nanoTime();
+            long cal_duration = (endTime - startTime);
 
-                String[] sub_task_data = {system_cpus+" cores "+system_ram , row +" x "+ row ,
-                        Integer.toString(system_cpus-1),Long.toString(setup_duration/1000000),
-                        Long.toString(cal_duration/1000000)
-                };
-                writer.writeNext(sub_task_data);
-                System.out.println("TEST "+ row + " x " + row + " [done] in " + cal_duration/1000000);
+            String[] sub_task_data = {system_cpus+" cores "+system_ram , row +" x "+ row ,
+                    Integer.toString(system_cpus-1),Long.toString(setup_duration/1000000),
+                    Long.toString(cal_duration/1000000)
+            };
+            writer.writeNext(sub_task_data);
+            System.out.println("TEST "+ row + " x " + row + " [done] in " + cal_duration/1000000);
 
-            }
+
             writer.close();
         }
         catch (IOException e) {
@@ -56,27 +56,7 @@ public class Main {
 
 
     public static void main(String[] args) {
-
-//        String root_path = System.getProperty("user.dir");
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd.HH.mm.ss");
-//        LocalDateTime now = LocalDateTime.now();
-//        int max_row = 1000;
-//
-//        if (args.length > 0) max_row = Integer.parseInt(args[0]);
-//
-//        writeDataLineByLine(root_path+"/report_"+dtf.format(now)+".csv", max_row);
-//        System.out.println("Testing report dir : "+root_path+"/report_"+dtf.format(now)+".csv");
-
-
-        Matrix matrix = new Matrix();
-        matrix.dev_auto_create_matrix(1000);
-        long startTime = System.nanoTime();
-        matrix.multiple_threads();
-        long endTime = System.nanoTime();
-        long duration = (endTime - startTime);
-
-        System.out.println(duration/1000000);
-
+        single();
     }
     private static void single(){
         Matrix matrix = new Matrix();
@@ -99,13 +79,28 @@ public class Main {
                 if (matrix.sets_validation_valid()) {
 //                    matrix.set_a.view_display();
 //                    matrix.set_b.view_display();
+                    System.out.println("Running...");
                     long startTime = System.nanoTime();
                     MatrixSet ans = matrix.multiple();
-//                    long endTime = System.nanoTime();
-//                    long duration = (endTime - startTime);
-//                    System.out.println(duration/1000000);
+                    long endTime = System.nanoTime();
+                    long setup_duration =  (endTime - startTime);
+                    ans.view_display();
 
-//                    ans.view_display();
+                    System.out.println("Time " + ans.col + " x " + ans.row +" : "+ (float) (setup_duration/1000000000)  + "s");
+                }else{
+                    System.out.println("Invalid sets.");
+
+                }
+            } else if (user_selected_menu == 4) {
+                if (matrix.sets_validation_valid()) {
+
+                    System.out.println("Running...");
+                    long startTime = System.nanoTime();
+                    MatrixSet ans = matrix.multiple_threads();
+                    long endTime = System.nanoTime();
+                    long setup_duration = (endTime - startTime);
+                    ans.view_display();
+                    System.out.println("Time " + ans.col + " x " + ans.row +" : "+ (float) (setup_duration/1000000000)+ "s");
 
                 }else{
                     System.out.println("Invalid sets.");

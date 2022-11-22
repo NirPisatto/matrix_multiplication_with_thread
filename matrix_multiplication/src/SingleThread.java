@@ -7,6 +7,7 @@ public class SingleThread {
         menus.add("Create Matrix");
         menus.add("Auto Generate Matrix");
         menus.add("Multiply Matrix");
+        menus.add("Multiply Matrix (Fast)");
         menus.add("Exit");
     }
     public void display(){

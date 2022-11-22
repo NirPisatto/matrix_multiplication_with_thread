@@ -45,22 +45,9 @@ public class Matrix {
 
     public void auto_create_matrix(){
         Scanner user_input = new Scanner(System.in);
-        MatrixSet set = new MatrixSet();
-        System.out.print("A set row: ");
-        set.row = user_input.nextInt();
-        System.out.print("A set col and B set row: ");
-        set.col = user_input.nextInt();
-        set_a = set;
-        set = new MatrixSet();
-        System.out.print("B set col: ");
-        set.col = user_input.nextInt();
-        set.row = set_a.col;
-        set_b = set;
-
-        set_a.auto_fill(10);
-//        set_a.view_display();
-        set_b.auto_fill(10);
-//        set_b.view_display();
+        System.out.print("Set size row and col: ");
+        int row =  user_input.nextInt();
+        dev_auto_create_matrix(row);
     }
 
     public MatrixSet multiple(){

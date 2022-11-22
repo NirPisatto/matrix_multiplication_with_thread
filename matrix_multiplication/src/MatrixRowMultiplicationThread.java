@@ -27,9 +27,8 @@ public class MatrixRowMultiplicationThread extends Thread{
 
     @Override
     public void run() {
-//        System.out.println(row_index + " running...");
-        for (int j = 0; j < set_b.row; j++){
-            row_ans.add(get_sub_step(set_a.get_rows(row_index),set_b.get_cols(j)));
+        for (int j = 0; j < set_b.col; j++){
+            row_ans.add(get_sub_step(set_a.get_rows(row_index),set_b.get_rows(j)));
         }
         this.ans.set.set(row_index, row_ans);
     }
