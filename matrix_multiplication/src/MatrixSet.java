@@ -25,6 +25,11 @@ public class MatrixSet extends Thread {
         this.row = 0;
         set = new ArrayList<>();
     }
+    public MatrixSet(int row, int colunm){
+        this.col = colunm;
+        this.row = row;
+        set = new ArrayList<>();
+    }
 
     public MatrixSet(Matrix main){
         main = main;
@@ -41,7 +46,6 @@ public class MatrixSet extends Thread {
     }
 
     public void auto_fill(int max_range){
-        set.clear();
         Random rand = new Random();
         for (int i = 0; i < row; i++) {
             ArrayList<Integer> temp_rows = new ArrayList<Integer>();
@@ -55,5 +59,6 @@ public class MatrixSet extends Thread {
     @Override
     public void run() {
         auto_fill(9);
+
     }
 }

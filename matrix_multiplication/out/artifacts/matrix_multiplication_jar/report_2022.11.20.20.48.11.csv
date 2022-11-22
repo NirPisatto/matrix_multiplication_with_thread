@@ -1,0 +1,5 @@
+"system environment","test condition","cores (active)","setting up duration (second)","multiplication execution duration (second)"
+"8 cores 2147 MB","100 x 100","7","8","41"
+"8 cores 2147 MB","400 x 400","7","22","290"
+"8 cores 2147 MB","700 x 700","7","22","1617"
+"8 cores 2147 MB","1000 x 1000","7","70","4275"

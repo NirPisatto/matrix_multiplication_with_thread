@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/matrix_multiplication_jar</output-path>
     <root id="archive" name="matrix_multiplication.jar">
       <element id="module-output" name="matrix_multiplication" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/opencsv-5.7.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

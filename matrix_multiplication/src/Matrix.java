@@ -10,15 +10,8 @@ public class Matrix {
     public MatrixSet set_a;
     public MatrixSet set_b;
 
-    public int running_threads = 0;
-    public int total_threads = 2;
-
-    public long done_time = 0;
-    public long start_time = 0;
-
 
     public void dev_auto_create_matrix(int row){
-        start_time = System.nanoTime();
         set_a = new MatrixSet(this);
         set_a.row = row;
         set_a.col = row;
@@ -115,8 +108,6 @@ public class Matrix {
         }
 
         executor.shutdown();
-
-//        ans.view_display();
 
         return ans;
     }
